@@ -115,7 +115,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <HeadContent />
       </head>
@@ -132,8 +132,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <SiteHeader />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <footer className="border-t border-border py-10">
+        <div className="mx-auto flex w-[min(1120px,92vw)] flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
+          <span>© {new Date().getFullYear()} Voyara · Propuestas de viaje para agencias</span>
+          <span>Demo comercial · datos de ejemplo</span>
+        </div>
+      </footer>
     </QueryClientProvider>
   );
 }
+
