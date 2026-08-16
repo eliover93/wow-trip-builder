@@ -413,10 +413,11 @@ function Backoffice() {
             <Fila k="Noches" v={String(viaje.noches)} />
           </dl>
           <p className="mt-6 text-xs text-muted-foreground">
-            Los cambios se guardan automáticamente en este navegador.
+            Los cambios se guardan automáticamente en la cuenta de tu agencia.
           </p>
         </aside>
       </div>
+      )}
     </main>
   );
 }
