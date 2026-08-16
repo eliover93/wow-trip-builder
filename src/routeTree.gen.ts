@@ -11,8 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as BackofficeRouteImport } from './routes/backoffice'
 import { Route as DemoRouteImport } from './routes/demo'
+import { Route as AuthenticatedBackofficeRouteImport } from './routes/_authenticated/backoffice'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -24,49 +24,49 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BackofficeRoute = BackofficeRouteImport.update({
-  id: '/backoffice',
-  path: '/backoffice',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DemoRoute = DemoRouteImport.update({
   id: '/demo',
   path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedBackofficeRoute = AuthenticatedBackofficeRouteImport.update({
+  id: '/_authenticated/backoffice',
+  path: '/backoffice',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/backoffice': typeof BackofficeRoute
   '/demo': typeof DemoRoute
+  '/backoffice': typeof AuthenticatedBackofficeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/backoffice': typeof BackofficeRoute
   '/demo': typeof DemoRoute
+  '/backoffice': typeof AuthenticatedBackofficeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/backoffice': typeof BackofficeRoute
   '/demo': typeof DemoRoute
+  '/_authenticated/backoffice': typeof AuthenticatedBackofficeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/backoffice' | '/demo'
+  fullPaths: '/' | '/auth' | '/demo' | '/backoffice'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/backoffice' | '/demo'
-  id: '__root__' | '/' | '/auth' | '/backoffice' | '/demo'
+  to: '/' | '/auth' | '/demo' | '/backoffice'
+  id: '__root__' | '/' | '/auth' | '/demo' | '/_authenticated/backoffice'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
-  BackofficeRoute: typeof BackofficeRoute
   DemoRoute: typeof DemoRoute
+  AuthenticatedBackofficeRoute: typeof AuthenticatedBackofficeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,18 +85,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/backoffice': {
-      id: '/backoffice'
-      path: '/backoffice'
-      fullPath: '/backoffice'
-      preLoaderRoute: typeof BackofficeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/demo': {
       id: '/demo'
       path: '/demo'
       fullPath: '/demo'
       preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/backoffice': {
+      id: '/_authenticated/backoffice'
+      path: '/backoffice'
+      fullPath: '/backoffice'
+      preLoaderRoute: typeof AuthenticatedBackofficeRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -105,8 +105,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
-  BackofficeRoute: BackofficeRoute,
   DemoRoute: DemoRoute,
+  AuthenticatedBackofficeRoute: AuthenticatedBackofficeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

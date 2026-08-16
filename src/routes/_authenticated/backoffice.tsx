@@ -4,7 +4,7 @@ import { Plus, RotateCcw, Trash2, Eye } from "lucide-react";
 import { useViaje } from "@/hooks/use-viaje";
 import { formatoMoneda, totalPresupuesto, type Actividad, type Dia } from "@/lib/trip";
 
-export const Route = createFileRoute("/backoffice")({
+export const Route = createFileRoute("/_authenticated/backoffice")({
   head: () => ({
     meta: [
       { title: "Backoffice · Crea el viaje en minutos | Voyara" },
