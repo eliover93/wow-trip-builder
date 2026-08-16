@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { Plus, RotateCcw, Trash2, Eye } from "lucide-react";
-import { useViaje } from "@/hooks/use-viaje";
+import { Plus, Trash2, Eye, Loader2, FolderOpen } from "lucide-react";
+import { useViajes } from "@/hooks/use-viajes";
+import { useAgencia } from "@/hooks/use-agencia";
 import { formatoMoneda, totalPresupuesto, type Actividad, type Dia } from "@/lib/trip";
 
 export const Route = createFileRoute("/_authenticated/backoffice")({
