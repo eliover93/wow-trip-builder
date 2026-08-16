@@ -91,24 +91,35 @@ function Backoffice() {
       presupuesto: viaje.presupuesto.map((l, i) => (i === indice ? { ...l, ...cambios } : l)),
     });
 
-  if (!cargado) return <div className="min-h-screen" />;
+  if (cargando) {
+    return (
+      <main className="flex min-h-screen items-center justify-center">
+        <Loader2 className="size-6 animate-spin text-primary" />
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto w-[min(1180px,92vw)] pb-28 pt-28">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-primary">Backoffice</p>
+          <p className="text-xs uppercase tracking-[0.35em] text-primary">
+            {agencia?.nombre ?? "Backoffice"}
+          </p>
           <h1 className="mt-3 text-4xl">Editor de viaje</h1>
           <p className="mt-2 text-muted-foreground">
-            Rellena los campos y todo se refleja al instante en la propuesta del cliente.
+            Tus viajes se guardan en tu cuenta y solo tu agencia puede verlos.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">
+            {guardando ? "Guardando…" : "Cambios guardados"}
+          </span>
           <button
-            onClick={reiniciar}
+            onClick={() => crear()}
             className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm transition-colors hover:bg-secondary"
           >
-            <RotateCcw className="size-4" /> Restaurar demo
+            <Plus className="size-4" /> Nuevo viaje
           </button>
           <Link
             to="/demo"
@@ -119,8 +130,74 @@ function Backoffice() {
         </div>
       </div>
 
+      {!viaje && (
+        <div className="mt-10 rounded-2xl border border-dashed border-border p-12 text-center">
+          <FolderOpen className="mx-auto size-8 text-muted-foreground" />
+          <h2 className="mt-4 text-xl">Todavía no tienes viajes</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Crea el primero y empieza a montar la propuesta de tu cliente.
+          </p>
+          <button
+            onClick={() => crear()}
+            className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+          >
+            <Plus className="size-4" /> Crear viaje
+          </button>
+        </div>
+      )}
+
+      {viaje && (
       <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-6">
+          <Tarjeta titulo="Mi agencia">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Campo
+                etiqueta="Nombre"
+                valor={agencia?.nombre ?? ""}
+                onChange={(v) => actualizarAgencia({ nombre: v })}
+              />
+              <Campo
+                etiqueta="Teléfono"
+                valor={agencia?.telefono ?? ""}
+                onChange={(v) => actualizarAgencia({ telefono: v })}
+              />
+              <Campo
+                etiqueta="Web"
+                valor={agencia?.web ?? ""}
+                onChange={(v) => actualizarAgencia({ web: v })}
+              />
+              <Campo
+                etiqueta="Logo (URL)"
+                valor={agencia?.logo_url ?? ""}
+                onChange={(v) => actualizarAgencia({ logo_url: v })}
+              />
+            </div>
+          </Tarjeta>
+
+          <Tarjeta titulo="Mis viajes">
+            <div className="space-y-2">
+              {lista.map((v) => (
+                <div
+                  key={v.id}
+                  className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition-colors ${
+                    v.id === seleccion ? "border-primary bg-secondary" : "border-border"
+                  }`}
+                >
+                  <button onClick={() => abrir(v.id)} className="flex-1 text-left">
+                    {v.titulo}
+                  </button>
+                  <button
+                    onClick={() => borrar(v.id)}
+                    aria-label="Eliminar viaje"
+                    className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-background hover:text-destructive"
+                  >
+                    <Trash2 className="size-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </Tarjeta>
+
           <Tarjeta titulo="Datos generales">
             <div className="grid gap-4 sm:grid-cols-2">
               <Campo
