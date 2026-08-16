@@ -14,7 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agencias: {
+        Row: {
+          created_at: string
+          id: string
+          logo_url: string | null
+          nombre: string
+          telefono: string | null
+          updated_at: string
+          web: string | null
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          logo_url?: string | null
+          nombre?: string
+          telefono?: string | null
+          updated_at?: string
+          web?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          nombre?: string
+          telefono?: string | null
+          updated_at?: string
+          web?: string | null
+        }
+        Relationships: []
+      }
+      viajes: {
+        Row: {
+          agencia_id: string
+          created_at: string
+          datos: Json
+          id: string
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          agencia_id: string
+          created_at?: string
+          datos?: Json
+          id?: string
+          titulo?: string
+          updated_at?: string
+        }
+        Update: {
+          agencia_id?: string
+          created_at?: string
+          datos?: Json
+          id?: string
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
