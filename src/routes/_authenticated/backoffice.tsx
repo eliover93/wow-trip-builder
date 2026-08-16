@@ -25,13 +25,17 @@ export const Route = createFileRoute("/_authenticated/backoffice")({
 });
 
 function Backoffice() {
-  const { viaje, actualizar, reiniciar, cargado } = useViaje();
-  const total = totalPresupuesto(viaje);
+  const { lista, seleccion, viaje, cargando, guardando, abrir, crear, borrar, actualizar } =
+    useViajes();
+  const { agencia, actualizar: actualizarAgencia } = useAgencia();
+  const total = viaje ? totalPresupuesto(viaje) : 0;
 
   const editarDia = (id: string, cambios: Partial<Dia>) =>
+    viaje &&
     actualizar({ dias: viaje.dias.map((d) => (d.id === id ? { ...d, ...cambios } : d)) });
 
   const editarActividad = (idDia: string, indice: number, cambios: Partial<Actividad>) =>
+    viaje &&
     actualizar({
       dias: viaje.dias.map((d) =>
         d.id === idDia
@@ -44,6 +48,7 @@ function Backoffice() {
     });
 
   const añadirActividad = (idDia: string) =>
+    viaje &&
     actualizar({
       dias: viaje.dias.map((d) =>
         d.id === idDia
@@ -55,7 +60,7 @@ function Backoffice() {
                   hora: "12:00",
                   titulo: "Nueva actividad",
                   descripcion: "Describe la experiencia",
-                  tipo: "experiencia",
+                  tipo: "experiencia" as const,
                 },
               ],
             }
@@ -64,6 +69,7 @@ function Backoffice() {
     });
 
   const borrarActividad = (idDia: string, indice: number) =>
+    viaje &&
     actualizar({
       dias: viaje.dias.map((d) =>
         d.id === idDia ? { ...d, actividades: d.actividades.filter((_, i) => i !== indice) } : d,
@@ -71,6 +77,7 @@ function Backoffice() {
     });
 
   const añadirDia = () =>
+    viaje &&
     actualizar({
       dias: [
         ...viaje.dias,
@@ -86,7 +93,11 @@ function Backoffice() {
       ],
     });
 
-  const editarLinea = (indice: number, cambios: Partial<(typeof viaje.presupuesto)[number]>) =>
+  const editarLinea = (
+    indice: number,
+    cambios: Partial<NonNullable<typeof viaje>["presupuesto"][number]>,
+  ) =>
+    viaje &&
     actualizar({
       presupuesto: viaje.presupuesto.map((l, i) => (i === indice ? { ...l, ...cambios } : l)),
     });
