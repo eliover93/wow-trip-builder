@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BackofficeRouteImport } from './routes/backoffice'
 import { Route as DemoRouteImport } from './routes/demo'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BackofficeRoute = BackofficeRouteImport.update({
@@ -31,30 +37,34 @@ const DemoRoute = DemoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/backoffice': typeof BackofficeRoute
   '/demo': typeof DemoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/backoffice': typeof BackofficeRoute
   '/demo': typeof DemoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/backoffice': typeof BackofficeRoute
   '/demo': typeof DemoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/backoffice' | '/demo'
+  fullPaths: '/' | '/auth' | '/backoffice' | '/demo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/backoffice' | '/demo'
-  id: '__root__' | '/' | '/backoffice' | '/demo'
+  to: '/' | '/auth' | '/backoffice' | '/demo'
+  id: '__root__' | '/' | '/auth' | '/backoffice' | '/demo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   BackofficeRoute: typeof BackofficeRoute
   DemoRoute: typeof DemoRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/backoffice': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   BackofficeRoute: BackofficeRoute,
   DemoRoute: DemoRoute,
 }
