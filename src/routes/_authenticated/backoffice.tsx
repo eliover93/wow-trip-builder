@@ -30,7 +30,32 @@ export const Route = createFileRoute("/_authenticated/backoffice")({
 function Backoffice() {
   const { lista, seleccion, viaje, cargando, guardando, abrir, crear, borrar, actualizar } =
     useViajes();
-  const { agencia, actualizar: actualizarAgencia } = useAgencia();
+  const {
+    agencia,
+    actualizar: actualizarAgencia,
+    refrescar: refrescarAgencia,
+    usadosEsteMes,
+  } = useAgencia();
+  const [upgradeAbierto, setUpgradeAbierto] = useState(false);
+  const plan = planPorId(agencia?.plan_type ?? "starter");
+  const limiteAlcanzado =
+    plan.limiteItinerarios !== null && usadosEsteMes >= plan.limiteItinerarios;
+
+  const nuevoViaje = async () => {
+    if (limiteAlcanzado) {
+      setUpgradeAbierto(true);
+      return;
+    }
+    const res = await crear();
+    if (res.limite) setUpgradeAbierto(true);
+    await refrescarAgencia();
+  };
+
+  const cambiarPlan = async (id: PlanId) => {
+    await actualizarAgencia({ plan_type: id });
+    setUpgradeAbierto(false);
+  };
+
   const total = viaje ? totalPresupuesto(viaje) : 0;
 
   const editarDia = (id: string, cambios: Partial<Dia>) =>
