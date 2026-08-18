@@ -155,7 +155,7 @@ function Backoffice() {
             {guardando ? "Guardando…" : "Cambios guardados"}
           </span>
           <button
-            onClick={() => crear()}
+            onClick={nuevoViaje}
             className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm transition-colors hover:bg-secondary"
           >
             <Plus className="size-4" /> Nuevo viaje
@@ -177,7 +177,7 @@ function Backoffice() {
             Crea el primero y empieza a montar la propuesta de tu cliente.
           </p>
           <button
-            onClick={() => crear()}
+            onClick={nuevoViaje}
             className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
           >
             <Plus className="size-4" /> Crear viaje
