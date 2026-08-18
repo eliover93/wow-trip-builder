@@ -32,23 +32,28 @@ export function useViajes() {
   }, []);
 
   const crear = useCallback(
-    async (base: Viaje = viajeDemo) => {
+    async (base: Viaje = viajeDemo): Promise<{ ok: boolean; limite?: boolean }> => {
       const { data: userData } = await supabase.auth.getUser();
       const user = userData.user;
-      if (!user) return;
-      const { data } = await supabase
+      if (!user) return { ok: false };
+      const { data, error } = await supabase
         .from("viajes")
         .insert({ agencia_id: user.id, titulo: base.titulo, datos: base as never })
         .select("id, titulo, updated_at")
         .single();
-      if (!data) return;
+      if (error) {
+        return { ok: false, limite: error.message.includes("LIMITE_ITINERARIOS") };
+      }
+      if (!data) return { ok: false };
       setLista((actual) => [data, ...actual]);
       saltarGuardado.current = true;
       setSeleccion(data.id);
       setViaje(base);
+      return { ok: true };
     },
     [],
   );
+
 
   const borrar = useCallback(
     async (id: string) => {
