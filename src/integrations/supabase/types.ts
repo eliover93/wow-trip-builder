@@ -16,31 +16,82 @@ export type Database = {
     Tables: {
       agencias: {
         Row: {
+          billing_cycle: Database["public"]["Enums"]["billing_cycle"]
+          contador_mes: string
           created_at: string
           id: string
+          itineraries_created_this_month: number
           logo_url: string | null
           nombre: string
+          plan_type: Database["public"]["Enums"]["plan_type"]
           telefono: string | null
           updated_at: string
           web: string | null
         }
         Insert: {
+          billing_cycle?: Database["public"]["Enums"]["billing_cycle"]
+          contador_mes?: string
           created_at?: string
           id: string
+          itineraries_created_this_month?: number
           logo_url?: string | null
           nombre?: string
+          plan_type?: Database["public"]["Enums"]["plan_type"]
           telefono?: string | null
           updated_at?: string
           web?: string | null
         }
         Update: {
+          billing_cycle?: Database["public"]["Enums"]["billing_cycle"]
+          contador_mes?: string
           created_at?: string
           id?: string
+          itineraries_created_this_month?: number
           logo_url?: string | null
           nombre?: string
+          plan_type?: Database["public"]["Enums"]["plan_type"]
           telefono?: string | null
           updated_at?: string
           web?: string | null
+        }
+        Relationships: []
+      }
+      planes: {
+        Row: {
+          analiticas_lectura: boolean
+          dominio_personalizado: boolean
+          id: Database["public"]["Enums"]["plan_type"]
+          limite_itinerarios: number | null
+          marca_blanca: boolean
+          nombre: string
+          orden: number
+          precio_anual: number
+          precio_mensual: number
+          usuarios_incluidos: number
+        }
+        Insert: {
+          analiticas_lectura?: boolean
+          dominio_personalizado?: boolean
+          id: Database["public"]["Enums"]["plan_type"]
+          limite_itinerarios?: number | null
+          marca_blanca?: boolean
+          nombre: string
+          orden?: number
+          precio_anual: number
+          precio_mensual: number
+          usuarios_incluidos?: number
+        }
+        Update: {
+          analiticas_lectura?: boolean
+          dominio_personalizado?: boolean
+          id?: Database["public"]["Enums"]["plan_type"]
+          limite_itinerarios?: number | null
+          marca_blanca?: boolean
+          nombre?: string
+          orden?: number
+          precio_anual?: number
+          precio_mensual?: number
+          usuarios_incluidos?: number
         }
         Relationships: []
       }
@@ -79,7 +130,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      billing_cycle: "monthly" | "yearly"
+      plan_type: "starter" | "pro" | "team"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -206,6 +258,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      billing_cycle: ["monthly", "yearly"],
+      plan_type: ["starter", "pro", "team"],
+    },
   },
 } as const
