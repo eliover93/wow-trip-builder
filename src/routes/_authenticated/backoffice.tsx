@@ -463,6 +463,14 @@ function Backoffice() {
         </aside>
       </div>
       )}
+
+      <UpgradeModal
+        abierto={upgradeAbierto}
+        onOpenChange={setUpgradeAbierto}
+        planActual={agencia?.plan_type ?? "starter"}
+        usados={usadosEsteMes}
+        onElegir={cambiarPlan}
+      />
     </main>
   );
 }
