@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { Plus, Trash2, Eye, Loader2, FolderOpen } from "lucide-react";
 import { useViajes } from "@/hooks/use-viajes";
 import { useAgencia } from "@/hooks/use-agencia";
+import { UpgradeModal } from "@/components/upgrade-modal";
+import { planPorId, type PlanId } from "@/lib/planes";
 import { formatoMoneda, totalPresupuesto, type Actividad, type Dia } from "@/lib/trip";
 
 export const Route = createFileRoute("/_authenticated/backoffice")({
@@ -27,7 +30,32 @@ export const Route = createFileRoute("/_authenticated/backoffice")({
 function Backoffice() {
   const { lista, seleccion, viaje, cargando, guardando, abrir, crear, borrar, actualizar } =
     useViajes();
-  const { agencia, actualizar: actualizarAgencia } = useAgencia();
+  const {
+    agencia,
+    actualizar: actualizarAgencia,
+    refrescar: refrescarAgencia,
+    usadosEsteMes,
+  } = useAgencia();
+  const [upgradeAbierto, setUpgradeAbierto] = useState(false);
+  const plan = planPorId(agencia?.plan_type ?? "starter");
+  const limiteAlcanzado =
+    plan.limiteItinerarios !== null && usadosEsteMes >= plan.limiteItinerarios;
+
+  const nuevoViaje = async () => {
+    if (limiteAlcanzado) {
+      setUpgradeAbierto(true);
+      return;
+    }
+    const res = await crear();
+    if (res.limite) setUpgradeAbierto(true);
+    await refrescarAgencia();
+  };
+
+  const cambiarPlan = async (id: PlanId) => {
+    await actualizarAgencia({ plan_type: id });
+    setUpgradeAbierto(false);
+  };
+
   const total = viaje ? totalPresupuesto(viaje) : 0;
 
   const editarDia = (id: string, cambios: Partial<Dia>) =>
@@ -123,11 +151,17 @@ function Backoffice() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+            Plan {plan.nombre} ·{" "}
+            {plan.limiteItinerarios === null
+              ? "itinerarios ilimitados"
+              : `${usadosEsteMes}/${plan.limiteItinerarios} este mes`}
+          </span>
           <span className="text-xs text-muted-foreground">
             {guardando ? "Guardando…" : "Cambios guardados"}
           </span>
           <button
-            onClick={() => crear()}
+            onClick={nuevoViaje}
             className="flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm transition-colors hover:bg-secondary"
           >
             <Plus className="size-4" /> Nuevo viaje
@@ -149,7 +183,7 @@ function Backoffice() {
             Crea el primero y empieza a montar la propuesta de tu cliente.
           </p>
           <button
-            onClick={() => crear()}
+            onClick={nuevoViaje}
             className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
           >
             <Plus className="size-4" /> Crear viaje
@@ -429,6 +463,14 @@ function Backoffice() {
         </aside>
       </div>
       )}
+
+      <UpgradeModal
+        abierto={upgradeAbierto}
+        onOpenChange={setUpgradeAbierto}
+        planActual={agencia?.plan_type ?? "starter"}
+        usados={usadosEsteMes}
+        onElegir={cambiarPlan}
+      />
     </main>
   );
 }
