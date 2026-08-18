@@ -151,6 +151,12 @@ function Backoffice() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
+            Plan {plan.nombre} ·{" "}
+            {plan.limiteItinerarios === null
+              ? "itinerarios ilimitados"
+              : `${usadosEsteMes}/${plan.limiteItinerarios} este mes`}
+          </span>
           <span className="text-xs text-muted-foreground">
             {guardando ? "Guardando…" : "Cambios guardados"}
           </span>
