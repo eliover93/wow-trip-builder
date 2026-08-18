@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { Plus, Trash2, Eye, Loader2, FolderOpen } from "lucide-react";
 import { useViajes } from "@/hooks/use-viajes";
 import { useAgencia } from "@/hooks/use-agencia";
+import { UpgradeModal } from "@/components/upgrade-modal";
+import { planPorId, type PlanId } from "@/lib/planes";
 import { formatoMoneda, totalPresupuesto, type Actividad, type Dia } from "@/lib/trip";
 
 export const Route = createFileRoute("/_authenticated/backoffice")({
