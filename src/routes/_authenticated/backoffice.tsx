@@ -509,11 +509,15 @@ function Campo({
   valor,
   onChange,
   tipo = "text",
+  deshabilitado = false,
+  ayuda,
 }: {
   etiqueta: string;
   valor: string;
   onChange: (v: string) => void;
   tipo?: string;
+  deshabilitado?: boolean;
+  ayuda?: string;
 }) {
   return (
     <label className="block">
@@ -523,9 +527,11 @@ function Campo({
       <input
         type={tipo}
         value={valor}
+        disabled={deshabilitado}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary"
+        className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary disabled:cursor-not-allowed disabled:opacity-50"
       />
+      {ayuda && <span className="mt-1 block text-xs text-muted-foreground">{ayuda}</span>}
     </label>
   );
 }
