@@ -48,6 +48,7 @@ const iconos = {
 
 function DemoViaje() {
   const { viaje } = useViaje();
+  const { agencia } = useAgencia();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
@@ -191,6 +192,14 @@ function DemoViaje() {
           </p>
         </div>
       </section>
+
+      <PiePropuesta
+        plan={agencia?.plan_type ?? "starter"}
+        nombre={agencia?.nombre || viaje.agencia}
+        logoUrl={agencia?.logo_url}
+        telefono={agencia?.telefono}
+        web={agencia?.web}
+      />
     </main>
   );
 }
