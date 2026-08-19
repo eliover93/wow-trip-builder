@@ -205,18 +205,100 @@ function Backoffice() {
                 etiqueta="Teléfono"
                 valor={agencia?.telefono ?? ""}
                 onChange={(v) => actualizarAgencia({ telefono: v })}
+                deshabilitado={!permisos.marcaBlanca}
               />
               <Campo
                 etiqueta="Web"
                 valor={agencia?.web ?? ""}
                 onChange={(v) => actualizarAgencia({ web: v })}
+                deshabilitado={!permisos.marcaBlanca}
               />
               <Campo
                 etiqueta="Logo (URL)"
                 valor={agencia?.logo_url ?? ""}
                 onChange={(v) => actualizarAgencia({ logo_url: v })}
+                deshabilitado={!permisos.marcaBlanca}
               />
             </div>
+            {!permisos.marcaBlanca ? (
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-border px-4 py-3">
+                <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Lock className="size-3.5" />
+                  En Starter las propuestas llevan “Creado con {NOMBRE_APP}”. Mejora a Pro para
+                  marca blanca con tu logo y contacto.
+                </p>
+                <button
+                  onClick={() => setUpgradeAbierto(true)}
+                  className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
+                >
+                  Mejorar plan
+                </button>
+              </div>
+            ) : (
+              <p className="mt-4 text-xs text-muted-foreground">
+                Marca blanca activa: tus propuestas muestran tu logo y contacto, sin branding de{" "}
+                {NOMBRE_APP}.
+              </p>
+            )}
+          </Tarjeta>
+
+          <Tarjeta titulo="Equipo">
+            {permisos.invitarColaboradores ? (
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  <input
+                    type="email"
+                    value={emailInvitado}
+                    onChange={(e) => setEmailInvitado(e.target.value)}
+                    placeholder="agente@tuagencia.com"
+                    className="min-w-[220px] flex-1 rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-primary"
+                  />
+                  <button
+                    onClick={invitar}
+                    disabled={colaboradores.length + 1 >= permisos.usuariosIncluidos}
+                    className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <UserPlus className="size-4" /> Invitar colaborador
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {colaboradores.length + 1}/{permisos.usuariosIncluidos} usuarios usados en tu plan
+                  Team.
+                </p>
+                <div className="space-y-2">
+                  {colaboradores.map((email) => (
+                    <div
+                      key={email}
+                      className="flex items-center justify-between rounded-lg border border-border px-3 py-2 text-sm"
+                    >
+                      <span>{email}</span>
+                      <button
+                        onClick={() =>
+                          setColaboradores((lista) => lista.filter((e) => e !== email))
+                        }
+                        aria-label={`Quitar a ${email}`}
+                        className="rounded-lg p-1.5 text-muted-foreground hover:text-destructive"
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-border px-4 py-4">
+                <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Lock className="size-4" />
+                  Invitar colaboradores está disponible en el plan Team (hasta 5 usuarios).
+                </p>
+                <Link
+                  to="/planes"
+                  className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
+                >
+                  Ver plan Team
+                </Link>
+              </div>
+            )}
           </Tarjeta>
 
           <Tarjeta titulo="Mis viajes">
