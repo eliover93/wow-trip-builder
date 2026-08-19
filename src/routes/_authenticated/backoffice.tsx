@@ -38,9 +38,22 @@ function Backoffice() {
     usadosEsteMes,
   } = useAgencia();
   const [upgradeAbierto, setUpgradeAbierto] = useState(false);
+  const [emailInvitado, setEmailInvitado] = useState("");
+  const [colaboradores, setColaboradores] = useState<string[]>([]);
   const plan = planPorId(agencia?.plan_type ?? "starter");
+  const permisos = permisosPlan(agencia?.plan_type);
   const limiteAlcanzado =
     plan.limiteItinerarios !== null && usadosEsteMes >= plan.limiteItinerarios;
+
+  const invitar = () => {
+    const email = emailInvitado.trim().toLowerCase();
+    if (!permisos.invitarColaboradores) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    if (colaboradores.includes(email)) return;
+    if (colaboradores.length + 1 >= permisos.usuariosIncluidos) return;
+    setColaboradores((lista) => [...lista, email]);
+    setEmailInvitado("");
+  };
 
   const nuevoViaje = async () => {
     if (limiteAlcanzado) {
