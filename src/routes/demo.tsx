@@ -15,6 +15,8 @@ import {
   Minus,
 } from "lucide-react";
 import { useViaje } from "@/hooks/use-viaje";
+import { useAgencia } from "@/hooks/use-agencia";
+import { PiePropuesta } from "@/components/pie-propuesta";
 import { formatoMoneda, totalPresupuesto, type Actividad, type Dia } from "@/lib/trip";
 
 export const Route = createFileRoute("/demo")({
