@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { Plus, Trash2, Eye, Loader2, FolderOpen } from "lucide-react";
+import { Plus, Trash2, Eye, Loader2, FolderOpen, Lock, UserPlus } from "lucide-react";
 import { useViajes } from "@/hooks/use-viajes";
 import { useAgencia } from "@/hooks/use-agencia";
 import { UpgradeModal } from "@/components/upgrade-modal";
 import { planPorId, type PlanId } from "@/lib/planes";
+import { NOMBRE_APP, permisosPlan } from "@/lib/permisos";
 import { formatoMoneda, totalPresupuesto, type Actividad, type Dia } from "@/lib/trip";
 
 export const Route = createFileRoute("/_authenticated/backoffice")({
@@ -37,9 +38,22 @@ function Backoffice() {
     usadosEsteMes,
   } = useAgencia();
   const [upgradeAbierto, setUpgradeAbierto] = useState(false);
+  const [emailInvitado, setEmailInvitado] = useState("");
+  const [colaboradores, setColaboradores] = useState<string[]>([]);
   const plan = planPorId(agencia?.plan_type ?? "starter");
+  const permisos = permisosPlan(agencia?.plan_type);
   const limiteAlcanzado =
     plan.limiteItinerarios !== null && usadosEsteMes >= plan.limiteItinerarios;
+
+  const invitar = () => {
+    const email = emailInvitado.trim().toLowerCase();
+    if (!permisos.invitarColaboradores) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    if (colaboradores.includes(email)) return;
+    if (colaboradores.length + 1 >= permisos.usuariosIncluidos) return;
+    setColaboradores((lista) => [...lista, email]);
+    setEmailInvitado("");
+  };
 
   const nuevoViaje = async () => {
     if (limiteAlcanzado) {
@@ -205,18 +219,100 @@ function Backoffice() {
                 etiqueta="Teléfono"
                 valor={agencia?.telefono ?? ""}
                 onChange={(v) => actualizarAgencia({ telefono: v })}
+                deshabilitado={!permisos.marcaBlanca}
               />
               <Campo
                 etiqueta="Web"
                 valor={agencia?.web ?? ""}
                 onChange={(v) => actualizarAgencia({ web: v })}
+                deshabilitado={!permisos.marcaBlanca}
               />
               <Campo
                 etiqueta="Logo (URL)"
                 valor={agencia?.logo_url ?? ""}
                 onChange={(v) => actualizarAgencia({ logo_url: v })}
+                deshabilitado={!permisos.marcaBlanca}
               />
             </div>
+            {!permisos.marcaBlanca ? (
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-border px-4 py-3">
+                <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Lock className="size-3.5" />
+                  En Starter las propuestas llevan “Creado con {NOMBRE_APP}”. Mejora a Pro para
+                  marca blanca con tu logo y contacto.
+                </p>
+                <button
+                  onClick={() => setUpgradeAbierto(true)}
+                  className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
+                >
+                  Mejorar plan
+                </button>
+              </div>
+            ) : (
+              <p className="mt-4 text-xs text-muted-foreground">
+                Marca blanca activa: tus propuestas muestran tu logo y contacto, sin branding de{" "}
+                {NOMBRE_APP}.
+              </p>
+            )}
+          </Tarjeta>
+
+          <Tarjeta titulo="Equipo">
+            {permisos.invitarColaboradores ? (
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  <input
+                    type="email"
+                    value={emailInvitado}
+                    onChange={(e) => setEmailInvitado(e.target.value)}
+                    placeholder="agente@tuagencia.com"
+                    className="min-w-[220px] flex-1 rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-primary"
+                  />
+                  <button
+                    onClick={invitar}
+                    disabled={colaboradores.length + 1 >= permisos.usuariosIncluidos}
+                    className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <UserPlus className="size-4" /> Invitar colaborador
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {colaboradores.length + 1}/{permisos.usuariosIncluidos} usuarios usados en tu plan
+                  Team.
+                </p>
+                <div className="space-y-2">
+                  {colaboradores.map((email) => (
+                    <div
+                      key={email}
+                      className="flex items-center justify-between rounded-lg border border-border px-3 py-2 text-sm"
+                    >
+                      <span>{email}</span>
+                      <button
+                        onClick={() =>
+                          setColaboradores((lista) => lista.filter((e) => e !== email))
+                        }
+                        aria-label={`Quitar a ${email}`}
+                        className="rounded-lg p-1.5 text-muted-foreground hover:text-destructive"
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-border px-4 py-4">
+                <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Lock className="size-4" />
+                  Invitar colaboradores está disponible en el plan Team (hasta 5 usuarios).
+                </p>
+                <Link
+                  to="/planes"
+                  className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground"
+                >
+                  Ver plan Team
+                </Link>
+              </div>
+            )}
           </Tarjeta>
 
           <Tarjeta titulo="Mis viajes">
@@ -509,11 +605,15 @@ function Campo({
   valor,
   onChange,
   tipo = "text",
+  deshabilitado = false,
+  ayuda,
 }: {
   etiqueta: string;
   valor: string;
   onChange: (v: string) => void;
   tipo?: string;
+  deshabilitado?: boolean;
+  ayuda?: string;
 }) {
   return (
     <label className="block">
@@ -523,9 +623,11 @@ function Campo({
       <input
         type={tipo}
         value={valor}
+        disabled={deshabilitado}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary"
+        className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary disabled:cursor-not-allowed disabled:opacity-50"
       />
+      {ayuda && <span className="mt-1 block text-xs text-muted-foreground">{ayuda}</span>}
     </label>
   );
 }

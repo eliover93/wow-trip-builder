@@ -15,6 +15,8 @@ import {
   Minus,
 } from "lucide-react";
 import { useViaje } from "@/hooks/use-viaje";
+import { useAgencia } from "@/hooks/use-agencia";
+import { PiePropuesta } from "@/components/pie-propuesta";
 import { formatoMoneda, totalPresupuesto, type Actividad, type Dia } from "@/lib/trip";
 
 export const Route = createFileRoute("/demo")({
@@ -46,6 +48,7 @@ const iconos = {
 
 function DemoViaje() {
   const { viaje } = useViaje();
+  const { agencia } = useAgencia();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
@@ -189,6 +192,14 @@ function DemoViaje() {
           </p>
         </div>
       </section>
+
+      <PiePropuesta
+        plan={agencia?.plan_type ?? "starter"}
+        nombre={agencia?.nombre || viaje.agencia}
+        logoUrl={agencia?.logo_url}
+        telefono={agencia?.telefono}
+        web={agencia?.web}
+      />
     </main>
   );
 }
