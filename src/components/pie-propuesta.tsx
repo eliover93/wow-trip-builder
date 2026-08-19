@@ -5,9 +5,9 @@ import type { PlanId } from "@/lib/planes";
 type Props = {
   plan: PlanId | null | undefined;
   nombre: string;
-  logoUrl?: string | null;
-  telefono?: string | null;
-  web?: string | null;
+  logoUrl?: string | null | undefined;
+  telefono?: string | null | undefined;
+  web?: string | null | undefined;
 };
 
 /**
