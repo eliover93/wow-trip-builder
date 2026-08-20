@@ -75,7 +75,7 @@
   --secondary: oklch(0.95 0.022 85);
   --secondary-foreground: oklch(0.3 0.035 250);
   --muted: oklch(0.95 0.02 85);
-  --muted-foreground: oklch(0.5 0.03 250);
+  --muted-foreground: oklch(0.42 0.035 250);
   --accent: oklch(0.72 0.11 200);
   --accent-foreground: oklch(0.22 0.04 220);
   --destructive: oklch(0.58 0.2 25);
@@ -99,11 +99,17 @@
   --sidebar-border: oklch(0.9 0.018 85);
   --sidebar-ring: oklch(0.68 0.17 48);
 
+  /* Velo oscuro para garantizar contraste del texto sobre la foto */
   --gradient-hero: linear-gradient(
+    to right,
+    oklch(0.18 0.03 250 / 0.82) 0%,
+    oklch(0.18 0.03 250 / 0.62) 45%,
+    oklch(0.18 0.03 250 / 0.28) 100%
+  );
+  --gradient-hero-bottom: linear-gradient(
     to top,
-    oklch(0.985 0.012 85) 2%,
-    oklch(0.985 0.012 85 / 0.55) 34%,
-    oklch(0.985 0.012 85 / 0) 78%
+    oklch(0.985 0.012 85) 0%,
+    oklch(0.985 0.012 85 / 0) 26%
   );
   --gradient-gold: linear-gradient(120deg, oklch(0.66 0.19 40), oklch(0.75 0.15 75));
   --shadow-glow: 0 24px 70px -30px oklch(0.68 0.17 48 / 0.45);
@@ -139,6 +145,21 @@
 
 @utility hero-veil {
   background: var(--gradient-hero);
+}
+
+@utility hero-fade {
+  background: var(--gradient-hero-bottom);
+}
+
+/* Texto sobre imagen: siempre claro y con sombra para legibilidad total */
+@utility on-image {
+  color: oklch(0.99 0.005 85);
+  text-shadow: 0 2px 18px oklch(0.15 0.03 250 / 0.6);
+}
+
+@utility on-image-muted {
+  color: oklch(0.93 0.012 85);
+  text-shadow: 0 2px 14px oklch(0.15 0.03 250 / 0.65);
 }
 
 @utility glass-panel {
