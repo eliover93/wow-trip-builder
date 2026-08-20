@@ -5,6 +5,7 @@ import { Plus, Trash2, Eye, Loader2, FolderOpen, Lock, UserPlus } from "lucide-r
 import { useViajes } from "@/hooks/use-viajes";
 import { useAgencia } from "@/hooks/use-agencia";
 import { UpgradeModal } from "@/components/upgrade-modal";
+import { BannerFundadores } from "@/components/banner-fundadores";
 import { planPorId, type PlanId } from "@/lib/planes";
 import { NOMBRE_APP, permisosPlan } from "@/lib/permisos";
 import { formatoMoneda, totalPresupuesto, type Actividad, type Dia } from "@/lib/trip";
@@ -188,6 +189,14 @@ function Backoffice() {
           </Link>
         </div>
       </div>
+
+      {agencia?.plan_type !== "pro" && agencia?.plan_type !== "team" && (
+        <div className="mt-8">
+          <BannerFundadores />
+        </div>
+      )}
+
+
 
       {!viaje && (
         <div className="mt-10 rounded-2xl border border-dashed border-border p-12 text-center">

@@ -12,6 +12,8 @@ import {
   type CicloFacturacion,
   type PlanId,
 } from "@/lib/planes";
+import { OFERTA_FUNDADORES, descuentoFundadores } from "@/lib/oferta-fundadores";
+import { BannerFundadores } from "@/components/banner-fundadores";
 
 export const Route = createFileRoute("/_authenticated/planes")({
   head: () => ({
@@ -40,16 +42,23 @@ function PaginaPlanes() {
   const [procesando, setProcesando] = useState<PlanId | null>(null);
   const ciclo: CicloFacturacion = anual ? "yearly" : "monthly";
   const planActual = agencia?.plan_type ?? "starter";
+  const ofertaAplicable = (id: PlanId) =>
+    OFERTA_FUNDADORES.activa && id === OFERTA_FUNDADORES.plan && planActual !== OFERTA_FUNDADORES.plan;
 
   const mejorar = async (id: PlanId) => {
     setProcesando(id);
+    // Cuando la pasarela esté conectada, este cupón se aplicará en el checkout.
+    const cupon = ofertaAplicable(id) ? OFERTA_FUNDADORES.cupon : null;
+    if (cupon) console.info("Cupón aplicado en el checkout:", cupon);
     await actualizar({ plan_type: id, billing_cycle: ciclo });
     setProcesando(null);
   };
 
   return (
     <main className="mx-auto w-[min(1120px,92vw)] pb-24 pt-32">
-      <div className="text-center">
+      <BannerFundadores />
+
+      <div className="mt-8 text-center">
         <p className="text-xs uppercase tracking-[0.35em] text-primary">Configuración</p>
         <h1 className="mt-3 text-4xl">Planes y precios</h1>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
@@ -99,18 +108,47 @@ function PaginaPlanes() {
                 </span>
               )}
 
+              {ofertaAplicable(plan.id) && (
+                <span className="absolute -top-3 right-4 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
+                  {OFERTA_FUNDADORES.etiqueta}
+                </span>
+              )}
+
               <h2 className="text-xl">{plan.nombre}</h2>
               <p className="mt-1 min-h-10 text-sm text-muted-foreground">{plan.descripcion}</p>
 
-              <p className="mt-6 text-4xl tabular-nums">
-                {precioMostrado(plan, ciclo)}€
-                <span className="text-sm text-muted-foreground"> /mes</span>
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {anual
-                  ? `${plan.precioAnual}€ al año · ahorras un ${ahorroAnual(plan)}%`
-                  : `o ${plan.precioAnual}€ al año`}
-              </p>
+              {ofertaAplicable(plan.id) ? (
+                <>
+                  <p className="mt-6 flex items-end gap-2 text-4xl tabular-nums">
+                    <span className="text-gradient-gold">
+                      {anual
+                        ? Math.round(OFERTA_FUNDADORES.precioAnual / 12)
+                        : OFERTA_FUNDADORES.precioMensual}
+                      €
+                    </span>
+                    <span className="text-sm text-muted-foreground line-through">
+                      {precioMostrado(plan, ciclo)}€
+                    </span>
+                    <span className="text-sm text-muted-foreground">/mes</span>
+                  </p>
+                  <p className="mt-1 text-xs text-primary">
+                    Precio fundador para siempre · −{descuentoFundadores()}% · cupón{" "}
+                    {OFERTA_FUNDADORES.cupon}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="mt-6 text-4xl tabular-nums">
+                    {precioMostrado(plan, ciclo)}€
+                    <span className="text-sm text-muted-foreground"> /mes</span>
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {anual
+                      ? `${plan.precioAnual}€ al año · ahorras un ${ahorroAnual(plan)}%`
+                      : `o ${plan.precioAnual}€ al año`}
+                  </p>
+                </>
+              )}
 
               <ul className="mt-6 flex-1 space-y-3 text-sm">
                 {plan.ventajas.map((v) => (
@@ -135,7 +173,9 @@ function PaginaPlanes() {
                   className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-transform hover:scale-[1.02] disabled:opacity-60"
                 >
                   {procesando === plan.id && <Loader2 className="size-4 animate-spin" />}
-                  Mejorar a este plan
+                  {ofertaAplicable(plan.id)
+                    ? `Conseguir precio fundador (${OFERTA_FUNDADORES.precioMensual}€/mes)`
+                    : "Mejorar a este plan"}
                 </button>
               ) : (
                 <button
