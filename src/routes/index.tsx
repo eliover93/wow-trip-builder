@@ -9,7 +9,7 @@ import {
   Globe2,
   ArrowRight,
 } from "lucide-react";
-import heroJapon from "@/assets/hero-japon.jpg";
+import heroMediterraneo from "@/assets/hero-mediterraneo.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -77,8 +77,8 @@ function Landing() {
     <main>
       <section className="relative min-h-[92vh] overflow-hidden">
         <img
-          src={heroJapon}
-          alt="Viaje presentado con Voyara"
+          src={heroMediterraneo}
+          alt="Playa mediterránea con mar turquesa presentada con Voyara"
           width={1920}
           height={1088}
           className="absolute inset-0 size-full object-cover opacity-70"
