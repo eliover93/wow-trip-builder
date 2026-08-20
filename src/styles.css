@@ -61,52 +61,53 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.17 0.024 250);
-  --foreground: oklch(0.96 0.008 90);
-  --surface: oklch(0.22 0.026 250);
-  --surface-2: oklch(0.27 0.028 250);
-  --card: oklch(0.22 0.026 250);
-  --card-foreground: oklch(0.96 0.008 90);
-  --popover: oklch(0.22 0.026 250);
-  --popover-foreground: oklch(0.96 0.008 90);
-  --primary: oklch(0.78 0.148 66);
-  --primary-foreground: oklch(0.19 0.03 60);
-  --secondary: oklch(0.27 0.028 250);
-  --secondary-foreground: oklch(0.96 0.008 90);
-  --muted: oklch(0.27 0.028 250);
-  --muted-foreground: oklch(0.72 0.02 250);
-  --accent: oklch(0.66 0.11 175);
-  --accent-foreground: oklch(0.17 0.03 175);
-  --destructive: oklch(0.6 0.21 25);
-  --destructive-foreground: oklch(0.97 0.01 90);
-  --border: oklch(0.36 0.026 250);
-  --input: oklch(0.32 0.026 250);
-  --ring: oklch(0.78 0.148 66);
-  --gold: oklch(0.82 0.14 78);
-  --jade: oklch(0.7 0.11 175);
-  --chart-1: oklch(0.78 0.148 66);
-  --chart-2: oklch(0.7 0.11 175);
-  --chart-3: oklch(0.66 0.12 250);
-  --chart-4: oklch(0.72 0.15 20);
-  --chart-5: oklch(0.75 0.1 300);
-  --sidebar: oklch(0.2 0.026 250);
-  --sidebar-foreground: oklch(0.96 0.008 90);
-  --sidebar-primary: oklch(0.78 0.148 66);
-  --sidebar-primary-foreground: oklch(0.19 0.03 60);
-  --sidebar-accent: oklch(0.27 0.028 250);
-  --sidebar-accent-foreground: oklch(0.96 0.008 90);
-  --sidebar-border: oklch(0.36 0.026 250);
-  --sidebar-ring: oklch(0.78 0.148 66);
+  /* Luz mediterránea: arena, cal blanca, mar turquesa y sol de Alicante */
+  --background: oklch(0.985 0.012 85);
+  --foreground: oklch(0.26 0.035 250);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.96 0.018 85);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.26 0.035 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.26 0.035 250);
+  --primary: oklch(0.68 0.17 48);
+  --primary-foreground: oklch(0.99 0.01 85);
+  --secondary: oklch(0.95 0.022 85);
+  --secondary-foreground: oklch(0.3 0.035 250);
+  --muted: oklch(0.95 0.02 85);
+  --muted-foreground: oklch(0.5 0.03 250);
+  --accent: oklch(0.72 0.11 200);
+  --accent-foreground: oklch(0.22 0.04 220);
+  --destructive: oklch(0.58 0.2 25);
+  --destructive-foreground: oklch(0.99 0.01 85);
+  --border: oklch(0.9 0.018 85);
+  --input: oklch(0.92 0.018 85);
+  --ring: oklch(0.68 0.17 48);
+  --gold: oklch(0.76 0.15 70);
+  --jade: oklch(0.7 0.11 190);
+  --chart-1: oklch(0.68 0.17 48);
+  --chart-2: oklch(0.72 0.11 200);
+  --chart-3: oklch(0.6 0.13 240);
+  --chart-4: oklch(0.7 0.16 20);
+  --chart-5: oklch(0.78 0.13 100);
+  --sidebar: oklch(0.97 0.016 85);
+  --sidebar-foreground: oklch(0.26 0.035 250);
+  --sidebar-primary: oklch(0.68 0.17 48);
+  --sidebar-primary-foreground: oklch(0.99 0.01 85);
+  --sidebar-accent: oklch(0.94 0.022 85);
+  --sidebar-accent-foreground: oklch(0.26 0.035 250);
+  --sidebar-border: oklch(0.9 0.018 85);
+  --sidebar-ring: oklch(0.68 0.17 48);
 
   --gradient-hero: linear-gradient(
     to top,
-    oklch(0.17 0.024 250) 4%,
-    oklch(0.17 0.024 250 / 0.72) 42%,
-    oklch(0.17 0.024 250 / 0.12) 100%
+    oklch(0.985 0.012 85) 3%,
+    oklch(0.985 0.012 85 / 0.82) 40%,
+    oklch(0.985 0.012 85 / 0.25) 100%
   );
-  --gradient-gold: linear-gradient(120deg, var(--gold), oklch(0.86 0.09 95));
-  --shadow-glow: 0 24px 70px -28px oklch(0.78 0.148 66 / 0.55);
-  --shadow-soft: 0 20px 50px -30px oklch(0.05 0 0 / 0.9);
+  --gradient-gold: linear-gradient(120deg, oklch(0.66 0.19 40), oklch(0.75 0.15 75));
+  --shadow-glow: 0 24px 70px -30px oklch(0.68 0.17 48 / 0.45);
+  --shadow-soft: 0 18px 44px -28px oklch(0.4 0.05 250 / 0.35);
 }
 
 @layer base {
@@ -141,12 +142,13 @@
 }
 
 @utility glass-panel {
-  background: color-mix(in oklab, var(--surface) 72%, transparent);
+  background: color-mix(in oklab, var(--surface) 78%, transparent);
   backdrop-filter: blur(14px);
-  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
   box-shadow: var(--shadow-soft);
 }
 
 @utility glow {
   box-shadow: var(--shadow-glow);
 }
+
