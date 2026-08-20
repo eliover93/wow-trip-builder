@@ -81,7 +81,7 @@ function Landing() {
           alt="Playa mediterránea con mar turquesa presentada con Voyara"
           width={1920}
           height={1088}
-          className="absolute inset-0 size-full object-cover opacity-70"
+          className="absolute inset-0 size-full object-cover"
         />
         <div className="absolute inset-0 hero-veil" />
         <div className="relative z-10 mx-auto flex min-h-[92vh] w-[min(1120px,92vw)] flex-col justify-center pt-24">

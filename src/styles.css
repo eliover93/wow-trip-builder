@@ -101,9 +101,9 @@
 
   --gradient-hero: linear-gradient(
     to top,
-    oklch(0.985 0.012 85) 3%,
-    oklch(0.985 0.012 85 / 0.82) 40%,
-    oklch(0.985 0.012 85 / 0.25) 100%
+    oklch(0.985 0.012 85) 2%,
+    oklch(0.985 0.012 85 / 0.55) 34%,
+    oklch(0.985 0.012 85 / 0) 78%
   );
   --gradient-gold: linear-gradient(120deg, oklch(0.66 0.19 40), oklch(0.75 0.15 75));
   --shadow-glow: 0 24px 70px -30px oklch(0.68 0.17 48 / 0.45);
