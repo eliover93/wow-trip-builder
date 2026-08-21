@@ -63,57 +63,57 @@
   --radius: 0.75rem;
   /* Luz mediterránea: arena, cal blanca, mar turquesa y sol de Alicante */
   --background: oklch(0.985 0.012 85);
-  --foreground: oklch(0.26 0.035 250);
+  --foreground: oklch(0.22 0.035 250);
   --surface: oklch(1 0 0);
   --surface-2: oklch(0.96 0.018 85);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.26 0.035 250);
+  --card-foreground: oklch(0.22 0.035 250);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.26 0.035 250);
-  --primary: oklch(0.68 0.17 48);
+  --popover-foreground: oklch(0.22 0.035 250);
+  --primary: oklch(0.6 0.17 45);
   --primary-foreground: oklch(0.99 0.01 85);
   --secondary: oklch(0.95 0.022 85);
-  --secondary-foreground: oklch(0.3 0.035 250);
+  --secondary-foreground: oklch(0.24 0.035 250);
   --muted: oklch(0.95 0.02 85);
-  --muted-foreground: oklch(0.42 0.035 250);
+  --muted-foreground: oklch(0.4 0.03 250);
   --accent: oklch(0.72 0.11 200);
-  --accent-foreground: oklch(0.22 0.04 220);
-  --destructive: oklch(0.58 0.2 25);
+  --accent-foreground: oklch(0.16 0.04 225);
+  --destructive: oklch(0.52 0.2 25);
   --destructive-foreground: oklch(0.99 0.01 85);
-  --border: oklch(0.9 0.018 85);
-  --input: oklch(0.92 0.018 85);
-  --ring: oklch(0.68 0.17 48);
-  --gold: oklch(0.76 0.15 70);
-  --jade: oklch(0.7 0.11 190);
-  --chart-1: oklch(0.68 0.17 48);
-  --chart-2: oklch(0.72 0.11 200);
+  --border: oklch(0.84 0.022 85);
+  --input: oklch(0.8 0.024 85);
+  --ring: oklch(0.6 0.17 45);
+  --gold: oklch(0.6 0.15 66);
+  --jade: oklch(0.56 0.1 190);
+  --chart-1: oklch(0.6 0.17 45);
+  --chart-2: oklch(0.56 0.1 200);
   --chart-3: oklch(0.6 0.13 240);
   --chart-4: oklch(0.7 0.16 20);
   --chart-5: oklch(0.78 0.13 100);
   --sidebar: oklch(0.97 0.016 85);
-  --sidebar-foreground: oklch(0.26 0.035 250);
-  --sidebar-primary: oklch(0.68 0.17 48);
+  --sidebar-foreground: oklch(0.22 0.035 250);
+  --sidebar-primary: oklch(0.6 0.17 45);
   --sidebar-primary-foreground: oklch(0.99 0.01 85);
   --sidebar-accent: oklch(0.94 0.022 85);
-  --sidebar-accent-foreground: oklch(0.26 0.035 250);
-  --sidebar-border: oklch(0.9 0.018 85);
-  --sidebar-ring: oklch(0.68 0.17 48);
+  --sidebar-accent-foreground: oklch(0.22 0.035 250);
+  --sidebar-border: oklch(0.84 0.022 85);
+  --sidebar-ring: oklch(0.6 0.17 45);
 
   /* Velo oscuro para garantizar contraste del texto sobre la foto */
   --gradient-hero: linear-gradient(
     to right,
-    oklch(0.18 0.03 250 / 0.82) 0%,
-    oklch(0.18 0.03 250 / 0.62) 45%,
-    oklch(0.18 0.03 250 / 0.28) 100%
+    oklch(0.16 0.03 250 / 0.86) 0%,
+    oklch(0.16 0.03 250 / 0.7) 45%,
+    oklch(0.16 0.03 250 / 0.5) 100%
   );
   --gradient-hero-bottom: linear-gradient(
     to top,
     oklch(0.985 0.012 85) 0%,
     oklch(0.985 0.012 85 / 0) 26%
   );
-  --gradient-gold: linear-gradient(120deg, oklch(0.66 0.19 40), oklch(0.75 0.15 75));
+  --gradient-gold: linear-gradient(120deg, oklch(0.56 0.18 38), oklch(0.62 0.15 72));
   --shadow-glow: 0 24px 70px -30px oklch(0.68 0.17 48 / 0.45);
-  --shadow-soft: 0 18px 44px -28px oklch(0.4 0.05 250 / 0.35);
+  --shadow-soft: 0 18px 44px -28px oklch(0.35 0.05 250 / 0.45);
 }
 
 @layer base {
@@ -157,13 +157,18 @@
   text-shadow: 0 2px 18px oklch(0.15 0.03 250 / 0.6);
 }
 
+@utility on-image-accent {
+  color: oklch(0.86 0.15 80);
+  text-shadow: 0 2px 18px oklch(0.15 0.03 250 / 0.7);
+}
+
 @utility on-image-muted {
   color: oklch(0.93 0.012 85);
   text-shadow: 0 2px 14px oklch(0.15 0.03 250 / 0.65);
 }
 
 @utility glass-panel {
-  background: color-mix(in oklab, var(--surface) 78%, transparent);
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
   backdrop-filter: blur(14px);
   border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
   box-shadow: var(--shadow-soft);

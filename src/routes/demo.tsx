@@ -75,7 +75,7 @@ function DemoViaje() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="text-xs uppercase tracking-[0.35em] text-primary"
+            className="on-image-accent text-xs uppercase tracking-[0.35em]"
           >
             {viaje.agencia} · para {viaje.cliente}
           </motion.p>
@@ -83,7 +83,7 @@ function DemoViaje() {
             initial={{ opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.1 }}
-            className="mt-4 max-w-3xl text-5xl leading-[1.05] md:text-7xl"
+            className="on-image mt-4 max-w-3xl text-5xl leading-[1.05] md:text-7xl"
           >
             {viaje.titulo}
           </motion.h1>
@@ -91,7 +91,7 @@ function DemoViaje() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.25 }}
-            className="mt-5 max-w-xl text-lg text-muted-foreground"
+            className="on-image-muted mt-5 max-w-xl text-lg"
           >
             {viaje.subtitulo}
           </motion.p>

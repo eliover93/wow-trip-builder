@@ -100,7 +100,7 @@ function Landing() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="on-image mt-5 max-w-4xl text-5xl leading-[1.04] md:text-7xl"
           >
-            Convierte tus itinerarios en <span className="text-gold">experiencias</span>{" "}
+            Convierte tus itinerarios en <span className="on-image-accent">experiencias</span>{" "}
             que se venden solas
           </motion.h1>
           <motion.p
@@ -194,7 +194,7 @@ function Landing() {
               transition={{ duration: 0.55, delay: i * 0.12 }}
               className="rounded-2xl border border-border p-7"
             >
-              <span className="font-display text-5xl text-muted-foreground/40">{p.n}</span>
+              <span className="font-display text-5xl text-muted-foreground/70">{p.n}</span>
               <h3 className="mt-4 text-2xl">{p.t}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{p.d}</p>
             </motion.div>
