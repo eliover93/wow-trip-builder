@@ -194,7 +194,7 @@ function Landing() {
               transition={{ duration: 0.55, delay: i * 0.12 }}
               className="rounded-2xl border border-border p-7"
             >
-              <span className="font-display text-5xl text-muted-foreground/40">{p.n}</span>
+              <span className="font-display text-5xl text-muted-foreground/70">{p.n}</span>
               <h3 className="mt-4 text-2xl">{p.t}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{p.d}</p>
             </motion.div>

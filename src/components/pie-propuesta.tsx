@@ -51,7 +51,7 @@ export function PiePropuesta({ plan, nombre, logoUrl, telefono, web }: Props) {
         {!marcaBlanca && (
           <a
             href="/"
-            className="text-xs text-muted-foreground/70 transition-colors hover:text-muted-foreground"
+            className="text-xs text-muted-foreground transition-colors hover:text-muted-foreground"
           >
             Creado con {NOMBRE_APP}
           </a>

@@ -99,7 +99,7 @@ function PaginaPlanes() {
               className={`relative flex flex-col rounded-2xl border p-7 ${
                 plan.destacado
                   ? "border-primary/60 bg-card shadow-[0_0_60px_-25px_hsl(var(--primary))]"
-                  : "border-border bg-card/60"
+                  : "border-border bg-card"
               }`}
             >
               {plan.destacado && (

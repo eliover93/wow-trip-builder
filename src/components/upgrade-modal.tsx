@@ -37,7 +37,7 @@ export function UpgradeModal({ abierto, onOpenChange, planActual, usados, onEleg
 
         <div className="grid gap-4 sm:grid-cols-2">
           {mejoras.map((plan) => (
-            <div key={plan.id} className="rounded-xl border border-border bg-card/60 p-5">
+            <div key={plan.id} className="rounded-xl border border-border bg-card p-5">
               <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                 {plan.nombre}
               </p>
