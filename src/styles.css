@@ -102,9 +102,9 @@
   /* Velo oscuro para garantizar contraste del texto sobre la foto */
   --gradient-hero: linear-gradient(
     to right,
-    oklch(0.18 0.03 250 / 0.82) 0%,
-    oklch(0.18 0.03 250 / 0.62) 45%,
-    oklch(0.18 0.03 250 / 0.42) 100%
+    oklch(0.16 0.03 250 / 0.86) 0%,
+    oklch(0.16 0.03 250 / 0.7) 45%,
+    oklch(0.16 0.03 250 / 0.5) 100%
   );
   --gradient-hero-bottom: linear-gradient(
     to top,
@@ -155,6 +155,11 @@
 @utility on-image {
   color: oklch(0.99 0.005 85);
   text-shadow: 0 2px 18px oklch(0.15 0.03 250 / 0.6);
+}
+
+@utility on-image-accent {
+  color: oklch(0.86 0.15 80);
+  text-shadow: 0 2px 18px oklch(0.15 0.03 250 / 0.7);
 }
 
 @utility on-image-muted {

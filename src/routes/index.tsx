@@ -100,7 +100,7 @@ function Landing() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="on-image mt-5 max-w-4xl text-5xl leading-[1.04] md:text-7xl"
           >
-            Convierte tus itinerarios en <span className="text-gold">experiencias</span>{" "}
+            Convierte tus itinerarios en <span className="on-image-accent">experiencias</span>{" "}
             que se venden solas
           </motion.h1>
           <motion.p
