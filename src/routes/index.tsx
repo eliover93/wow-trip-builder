@@ -84,12 +84,13 @@ function Landing() {
           className="absolute inset-0 size-full object-cover"
         />
         <div className="absolute inset-0 hero-veil" />
+        <div className="absolute inset-x-0 bottom-0 h-40 hero-fade" />
         <div className="relative z-10 mx-auto flex min-h-[92vh] w-[min(1120px,92vw)] flex-col justify-center pt-24">
           <motion.p
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-xs uppercase tracking-[0.35em] text-primary"
+            className="on-image text-xs font-semibold uppercase tracking-[0.35em]"
           >
             Software para agencias de viaje
           </motion.p>
@@ -97,16 +98,16 @@ function Landing() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="mt-5 max-w-4xl text-5xl leading-[1.04] md:text-7xl"
+            className="on-image mt-5 max-w-4xl text-5xl leading-[1.04] md:text-7xl"
           >
-            Convierte tus itinerarios en <span className="text-gradient-gold">experiencias</span>{" "}
+            Convierte tus itinerarios en <span className="text-gold">experiencias</span>{" "}
             que se venden solas
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.25 }}
-            className="mt-6 max-w-xl text-lg text-muted-foreground"
+            className="on-image-muted mt-6 max-w-xl text-lg"
           >
             Voyara genera paquetes de viaje dinámicos y visuales a partir de un formulario simple.
             Tu equipo rellena, tu cliente alucina.
@@ -125,7 +126,7 @@ function Landing() {
             </Link>
             <Link
               to="/backoffice"
-              className="rounded-xl border border-border glass-panel px-6 py-3.5 font-medium transition-colors hover:bg-secondary"
+              className="rounded-xl border border-background/60 bg-background/90 px-6 py-3.5 font-medium text-foreground backdrop-blur transition-colors hover:bg-background"
             >
               Probar el backoffice
             </Link>
