@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { viajeDemo, type Viaje } from "@/lib/trip";
 
-export type ViajeResumen = { id: string; titulo: string; updated_at: string };
+export type ViajeResumen = { id: string; titulo: string; updated_at: string; publico: boolean };
 
 /**
  * Viajes de la agencia conectada. Cada fila pertenece a una cuenta y las
@@ -14,21 +14,23 @@ export function useViajes() {
   const [viaje, setViaje] = useState<Viaje | null>(null);
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
-  const saltarGuardado = useRef(true);
+  const [sucio, setSucio] = useState(false);
+  const saltarSucio = useRef(true);
 
   const cargarLista = useCallback(async () => {
     const { data } = await supabase
       .from("viajes")
-      .select("id, titulo, updated_at")
+      .select("id, titulo, updated_at, publico")
       .order("updated_at", { ascending: false });
-    return data ?? [];
+    return (data ?? []) as ViajeResumen[];
   }, []);
 
   const abrir = useCallback(async (id: string) => {
     const { data } = await supabase.from("viajes").select("datos").eq("id", id).maybeSingle();
-    saltarGuardado.current = true;
+    saltarSucio.current = true;
     setSeleccion(id);
     setViaje({ ...viajeDemo, ...((data?.datos as Partial<Viaje>) ?? {}) });
+    setSucio(false);
   }, []);
 
   const crear = useCallback(
@@ -39,21 +41,21 @@ export function useViajes() {
       const { data, error } = await supabase
         .from("viajes")
         .insert({ agencia_id: user.id, titulo: base.titulo, datos: base as never })
-        .select("id, titulo, updated_at")
+        .select("id, titulo, updated_at, publico")
         .single();
       if (error) {
         return { ok: false, limite: error.message.includes("LIMITE_ITINERARIOS") };
       }
       if (!data) return { ok: false };
-      setLista((actual) => [data, ...actual]);
-      saltarGuardado.current = true;
+      setLista((actual) => [data as ViajeResumen, ...actual]);
+      saltarSucio.current = true;
       setSeleccion(data.id);
       setViaje(base);
+      setSucio(false);
       return { ok: true };
     },
     [],
   );
-
 
   const borrar = useCallback(
     async (id: string) => {
@@ -90,26 +92,58 @@ export function useViajes() {
     setViaje((actual) => (actual ? { ...actual, ...cambios } : actual));
   }, []);
 
-  // Guardado automático con pequeño retardo.
   useEffect(() => {
     if (!viaje || !seleccion) return;
-    if (saltarGuardado.current) {
-      saltarGuardado.current = false;
+    if (saltarSucio.current) {
+      saltarSucio.current = false;
       return;
     }
-    setGuardando(true);
-    const t = setTimeout(async () => {
-      await supabase
-        .from("viajes")
-        .update({ titulo: viaje.titulo, datos: viaje as never })
-        .eq("id", seleccion);
-      setLista((actual) =>
-        actual.map((v) => (v.id === seleccion ? { ...v, titulo: viaje.titulo } : v)),
-      );
-      setGuardando(false);
-    }, 700);
-    return () => clearTimeout(t);
+    setSucio(true);
   }, [viaje, seleccion]);
 
-  return { lista, seleccion, viaje, cargando, guardando, abrir, crear, borrar, actualizar };
+  /** Guardado explícito en la base de datos. Devuelve true si se guardó. */
+  const guardar = useCallback(async (): Promise<boolean> => {
+    if (!viaje || !seleccion) return false;
+    setGuardando(true);
+    const { error } = await supabase
+      .from("viajes")
+      .update({ titulo: viaje.titulo, datos: viaje as never })
+      .eq("id", seleccion);
+    setGuardando(false);
+    if (error) return false;
+    setLista((actual) =>
+      actual.map((v) => (v.id === seleccion ? { ...v, titulo: viaje.titulo } : v)),
+    );
+    setSucio(false);
+    return true;
+  }, [viaje, seleccion]);
+
+  /** Activa o desactiva el enlace público del viaje seleccionado. */
+  const cambiarPublico = useCallback(
+    async (id: string, publico: boolean): Promise<boolean> => {
+      const { error } = await supabase.from("viajes").update({ publico }).eq("id", id);
+      if (error) return false;
+      setLista((actual) => actual.map((v) => (v.id === id ? { ...v, publico } : v)));
+      return true;
+    },
+    [],
+  );
+
+  const actual = lista.find((v) => v.id === seleccion) ?? null;
+
+  return {
+    lista,
+    seleccion,
+    viaje,
+    actual,
+    cargando,
+    guardando,
+    sucio,
+    abrir,
+    crear,
+    borrar,
+    actualizar,
+    guardar,
+    cambiarPublico,
+  };
 }

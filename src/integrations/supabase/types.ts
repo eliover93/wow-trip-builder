@@ -101,6 +101,7 @@ export type Database = {
           created_at: string
           datos: Json
           id: string
+          publico: boolean
           titulo: string
           updated_at: string
         }
@@ -109,6 +110,7 @@ export type Database = {
           created_at?: string
           datos?: Json
           id?: string
+          publico?: boolean
           titulo?: string
           updated_at?: string
         }
@@ -117,6 +119,7 @@ export type Database = {
           created_at?: string
           datos?: Json
           id?: string
+          publico?: boolean
           titulo?: string
           updated_at?: string
         }
