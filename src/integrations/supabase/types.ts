@@ -101,6 +101,7 @@ export type Database = {
           created_at: string
           datos: Json
           id: string
+          publico: boolean
           titulo: string
           updated_at: string
         }
@@ -109,6 +110,7 @@ export type Database = {
           created_at?: string
           datos?: Json
           id?: string
+          publico?: boolean
           titulo?: string
           updated_at?: string
         }
@@ -117,6 +119,7 @@ export type Database = {
           created_at?: string
           datos?: Json
           id?: string
+          publico?: boolean
           titulo?: string
           updated_at?: string
         }
@@ -124,7 +127,33 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      agencias_publicas: {
+        Row: {
+          id: string | null
+          logo_url: string | null
+          nombre: string | null
+          plan_type: Database["public"]["Enums"]["plan_type"] | null
+          telefono: string | null
+          web: string | null
+        }
+        Insert: {
+          id?: string | null
+          logo_url?: string | null
+          nombre?: string | null
+          plan_type?: Database["public"]["Enums"]["plan_type"] | null
+          telefono?: string | null
+          web?: string | null
+        }
+        Update: {
+          id?: string | null
+          logo_url?: string | null
+          nombre?: string | null
+          plan_type?: Database["public"]["Enums"]["plan_type"] | null
+          telefono?: string | null
+          web?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
