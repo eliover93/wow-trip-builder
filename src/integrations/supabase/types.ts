@@ -127,33 +127,7 @@ export type Database = {
       }
     }
     Views: {
-      agencias_publicas: {
-        Row: {
-          id: string | null
-          logo_url: string | null
-          nombre: string | null
-          plan_type: Database["public"]["Enums"]["plan_type"] | null
-          telefono: string | null
-          web: string | null
-        }
-        Insert: {
-          id?: string | null
-          logo_url?: string | null
-          nombre?: string | null
-          plan_type?: Database["public"]["Enums"]["plan_type"] | null
-          telefono?: string | null
-          web?: string | null
-        }
-        Update: {
-          id?: string | null
-          logo_url?: string | null
-          nombre?: string | null
-          plan_type?: Database["public"]["Enums"]["plan_type"] | null
-          telefono?: string | null
-          web?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       [_ in never]: never
