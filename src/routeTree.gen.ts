@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as AuthenticatedBackofficeRouteImport } from './routes/_authenticated/backoffice'
 import { Route as AuthenticatedPlanesRouteImport } from './routes/_authenticated/planes'
+import { Route as PropuestaIdRouteImport } from './routes/propuesta.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,6 +46,11 @@ const AuthenticatedPlanesRoute = AuthenticatedPlanesRouteImport.update({
   path: '/planes',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const PropuestaIdRoute = PropuestaIdRouteImport.update({
+  id: '/propuesta/$id',
+  path: '/propuesta/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/demo': typeof DemoRoute
   '/backoffice': typeof AuthenticatedBackofficeRoute
   '/planes': typeof AuthenticatedPlanesRoute
+  '/propuesta/$id': typeof PropuestaIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/demo': typeof DemoRoute
   '/backoffice': typeof AuthenticatedBackofficeRoute
   '/planes': typeof AuthenticatedPlanesRoute
+  '/propuesta/$id': typeof PropuestaIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +76,14 @@ export interface FileRoutesById {
   '/demo': typeof DemoRoute
   '/_authenticated/backoffice': typeof AuthenticatedBackofficeRoute
   '/_authenticated/planes': typeof AuthenticatedPlanesRoute
+  '/propuesta/$id': typeof PropuestaIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/demo' | '/backoffice' | '/planes'
+  fullPaths:
+    '/' | '/auth' | '/demo' | '/backoffice' | '/planes' | '/propuesta/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/demo' | '/backoffice' | '/planes'
+  to: '/' | '/auth' | '/demo' | '/backoffice' | '/planes' | '/propuesta/$id'
   id:
     | '__root__'
     | '/'
@@ -82,6 +92,7 @@ export interface FileRouteTypes {
     | '/demo'
     | '/_authenticated/backoffice'
     | '/_authenticated/planes'
+    | '/propuesta/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -89,6 +100,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   DemoRoute: typeof DemoRoute
+  PropuestaIdRoute: typeof PropuestaIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -135,6 +147,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlanesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/propuesta/$id': {
+      id: '/propuesta/$id'
+      path: '/propuesta/$id'
+      fullPath: '/propuesta/$id'
+      preLoaderRoute: typeof PropuestaIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -156,6 +175,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   DemoRoute: DemoRoute,
+  PropuestaIdRoute: PropuestaIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
